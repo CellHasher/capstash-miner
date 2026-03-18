@@ -1,0 +1,6 @@
+target: sd888
+description: Snapdragon 888 A78-tuned (Galaxy S21/Z Fold3, OnePlus 9)
+mcpu: cortex-a78
+march: armv8.2-a+crc+crypto+dotprod+fp16
+ndk_api: 28
+built: 2026-03-18T01:46:09Z
