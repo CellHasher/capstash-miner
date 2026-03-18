@@ -1,0 +1,6 @@
+target: dimensity9200
+description: Dimensity 9200 (vivo X90, OPPO Find X6)
+mcpu: cortex-x3
+march: armv8.4-a+crc+crypto+dotprod+fp16+i8mm
+ndk_api: 28
+built: 2026-03-18T02:07:12Z
