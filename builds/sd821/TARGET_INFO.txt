@@ -3,4 +3,4 @@ description: Snapdragon 821 (Pixel 1, OnePlus 3T, LG G6)
 mcpu: cortex-a72
 march: armv8-a+crc+crypto
 ndk_api: 28
-built: 2026-03-18T01:42:07Z
+built: 2026-03-19T22:49:59Z
