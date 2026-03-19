@@ -3,4 +3,4 @@ description: Snapdragon 8+ Gen 1 (Galaxy Z Fold4, ROG Phone 6)
 mcpu: cortex-x2
 march: armv8.4-a+crc+crypto+dotprod+fp16+i8mm
 ndk_api: 28
-built: 2026-03-18T01:48:36Z
+built: 2026-03-19T22:56:33Z
