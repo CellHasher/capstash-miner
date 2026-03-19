@@ -3,4 +3,4 @@ description: MediaTek Helio P60 (Budget 2018 devices)
 mcpu: cortex-a73
 march: armv8-a+crc+crypto
 ndk_api: 28
-built: 2026-03-18T02:08:01Z
+built: 2026-03-19T23:17:05Z
