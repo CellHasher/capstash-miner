@@ -3,4 +3,4 @@ description: Snapdragon 8 Gen 1 (Galaxy S22, OnePlus 10 Pro)
 mcpu: cortex-x2
 march: armv8.4-a+crc+crypto+dotprod+fp16+i8mm
 ndk_api: 28
-built: 2026-03-18T01:47:47Z
+built: 2026-03-19T22:55:44Z
