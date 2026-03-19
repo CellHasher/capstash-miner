@@ -18,27 +18,23 @@ CYAN='\033[0;36m'
 RED='\033[0;31m'
 NC='\033[0m'
 
-# ---------- helpers ----------
-
-find_python() {
-    if command -v python3 >/dev/null 2>&1; then
-        echo "python3"
-        return 0
-    fi
-    if command -v python >/dev/null 2>&1; then
-        echo "python"
-        return 0
-    fi
-    return 1
-}
-
 trim() {
     local var="$1"
-    # trim leading
     var="${var#"${var%%[![:space:]]*}"}"
-    # trim trailing
     var="${var%"${var##*[![:space:]]}"}"
     printf '%s' "$var"
+}
+
+json_get_string() {
+    local key="$1"
+    local file="$2"
+    grep -o "\"$key\":[[:space:]]*\"[^\"]*\"" "$file" | head -n1 | sed "s/.*\"$key\":[[:space:]]*\"\([^\"]*\)\".*/\1/"
+}
+
+json_get_number() {
+    local key="$1"
+    local file="$2"
+    grep -o "\"$key\":[[:space:]]*[-0-9][0-9]*" "$file" | head -n1 | sed "s/.*\"$key\":[[:space:]]*//"
 }
 
 # ---------- load config.json ----------
@@ -48,36 +44,10 @@ if [ ! -f "$CONFIG_JSON" ]; then
     exit 1
 fi
 
-PYTHON_BIN="$(find_python || true)"
-if [ -z "$PYTHON_BIN" ]; then
-    echo -e "${RED}Error: python3/python not found. Cannot parse config.json${NC}"
-    exit 1
-fi
-
-PARSED_CONFIG="$("$PYTHON_BIN" - "$CONFIG_JSON" <<'PY'
-import json, sys
-
-path = sys.argv[1]
-with open(path, "r", encoding="utf-8") as f:
-    cfg = json.load(f)
-
-wallet_address = str(cfg.get("wallet_address", "") or "").strip()
-threads = cfg.get("threads", -1)
-coinbase_tag = str(cfg.get("coinbase_tag", "CellSwarm") or "CellSwarm").strip()
-target = str(cfg.get("target", "auto") or "auto").strip()
-
-print(f"MINING_ADDR={wallet_address}")
-print(f"THREADS={threads}")
-print(f"COINBASE_TAG={coinbase_tag}")
-print(f"TARGET={target}")
-PY
-)"
-
-# shell-safe-ish parse because values are simple
-MINING_ADDR="$(printf '%s\n' "$PARSED_CONFIG" | sed -n 's/^MINING_ADDR=//p' | head -n1)"
-THREADS="$(printf '%s\n' "$PARSED_CONFIG" | sed -n 's/^THREADS=//p' | head -n1)"
-COINBASE_TAG="$(printf '%s\n' "$PARSED_CONFIG" | sed -n 's/^COINBASE_TAG=//p' | head -n1)"
-TARGET="$(printf '%s\n' "$PARSED_CONFIG" | sed -n 's/^TARGET=//p' | head -n1)"
+MINING_ADDR="$(json_get_string "wallet_address" "$CONFIG_JSON")"
+THREADS="$(json_get_number "threads" "$CONFIG_JSON")"
+COINBASE_TAG="$(json_get_string "coinbase_tag" "$CONFIG_JSON")"
+TARGET="$(json_get_string "target" "$CONFIG_JSON")"
 
 MINING_ADDR="$(trim "$MINING_ADDR")"
 THREADS="$(trim "$THREADS")"
@@ -88,6 +58,13 @@ TARGET="$(trim "$TARGET")"
 [ -z "$COINBASE_TAG" ] && COINBASE_TAG="CellSwarm"
 [ -z "$TARGET" ] && TARGET="auto"
 [ -z "$THREADS" ] && THREADS="-1"
+
+echo -e "${CYAN}DEBUG: Using config file:${NC} $CONFIG_JSON"
+echo -e "${CYAN}DEBUG: Parsed wallet_address:${NC} '$MINING_ADDR'"
+echo -e "${CYAN}DEBUG: Parsed threads:${NC} '$THREADS'"
+echo -e "${CYAN}DEBUG: Parsed coinbase_tag:${NC} '$COINBASE_TAG'"
+echo -e "${CYAN}DEBUG: Parsed target:${NC} '$TARGET'"
+echo ""
 
 if [ -z "$MINING_ADDR" ]; then
     echo -e "${RED}wallet_address is empty in config.json${NC}"
