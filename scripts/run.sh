@@ -37,6 +37,11 @@ json_get_number() {
     grep -o "\"$key\":[[:space:]]*[-0-9][0-9]*" "$file" | head -n1 | sed "s/.*\"$key\":[[:space:]]*//"
 }
 
+echo -e "${CYAN}CapStash Miner${NC}"
+echo "  Install dir: $INSTALL_DIR"
+echo "  Config file: $CONFIG_JSON"
+echo ""
+
 # ---------- load config.json ----------
 
 if [ ! -f "$CONFIG_JSON" ]; then
@@ -59,7 +64,9 @@ TARGET="$(trim "$TARGET")"
 [ -z "$TARGET" ] && TARGET="auto"
 [ -z "$THREADS" ] && THREADS="-1"
 
-echo -e "${CYAN}DEBUG: Using config file:${NC} $CONFIG_JSON"
+echo -e "${CYAN}DEBUG: Raw config.json:${NC}"
+cat "$CONFIG_JSON"
+echo ""
 echo -e "${CYAN}DEBUG: Parsed wallet_address:${NC} '$MINING_ADDR'"
 echo -e "${CYAN}DEBUG: Parsed threads:${NC} '$THREADS'"
 echo -e "${CYAN}DEBUG: Parsed coinbase_tag:${NC} '$COINBASE_TAG'"
@@ -78,7 +85,6 @@ case "$THREADS" in
         ;;
 esac
 
-echo -e "${CYAN}CapStash Miner${NC}"
 echo "  Address: $MINING_ADDR"
 echo "  Target:  $TARGET"
 echo "  Threads: $THREADS"
@@ -120,6 +126,7 @@ while true; do
 
     IBD="$(echo "$INFO" | grep initialblockdownload | grep -c true || true)"
     if [ "$IBD" = "0" ]; then
+        echo ""
         echo -e "${GREEN}Chain synced!${NC}"
         break
     fi
@@ -145,6 +152,7 @@ RESULT="$($CLI setgenerate true "$THREADS" "$MINING_ADDR" "$COINBASE_TAG" 2>&1 |
 echo "$RESULT"
 
 # ---------- show status ----------
+
 echo ""
 bash "$INSTALL_DIR/status.sh" 2>/dev/null || true
 echo ""
