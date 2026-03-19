@@ -3,4 +3,4 @@ description: Dimensity 1000 (Redmi K30, OPPO Reno3)
 mcpu: cortex-a77
 march: armv8.2-a+crc+crypto+dotprod+fp16
 ndk_api: 28
-built: 2026-03-18T02:04:47Z
+built: 2026-03-19T23:13:48Z
