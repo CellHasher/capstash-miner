@@ -3,4 +3,4 @@ description: Google Tensor G3 (Pixel 8/8 Pro)
 mcpu: cortex-x3
 march: armv8.4-a+crc+crypto+dotprod+fp16+i8mm
 ndk_api: 28
-built: 2026-03-18T02:00:44Z
+built: 2026-03-19T23:09:43Z
