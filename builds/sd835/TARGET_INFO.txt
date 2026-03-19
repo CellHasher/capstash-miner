@@ -1,6 +1,6 @@
 target: sd835
 description: Snapdragon 835 (Galaxy S8, Pixel 2, OnePlus 5)
 mcpu: cortex-a73
-march: armv8-a+crc+crypto+dotprod
+march: armv8-a+crc+crypto
 ndk_api: 28
-built: 2026-03-18T01:42:56Z
+built: 2026-03-19T22:50:48Z
