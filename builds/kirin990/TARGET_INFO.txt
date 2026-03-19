@@ -3,4 +3,4 @@ description: Kirin 990 (Huawei Mate 30, P40)
 mcpu: cortex-a76
 march: armv8.2-a+crc+crypto+dotprod+fp16
 ndk_api: 28
-built: 2026-03-18T02:03:58Z
+built: 2026-03-19T23:12:59Z
